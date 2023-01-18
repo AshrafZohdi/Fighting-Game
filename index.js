@@ -35,13 +35,15 @@ class Sprite {
 
         // Attack Box
 
-        c.fillStyle = 'yellow';
-        c.fillRect(
-            this.attackbox.position.x,
-            this.attackbox.position.y,
-            this.attackbox.width,
-            this.attackbox.height
-        );
+        if (this.isAttacking) {
+            c.fillStyle = 'yellow';
+            c.fillRect(
+                this.attackbox.position.x,
+                this.attackbox.position.y,
+                this.attackbox.width,
+                this.attackbox.height
+            );
+        }
     }
 
     update() {
@@ -134,6 +136,7 @@ function animate() {
         && player.attackbox.position.y + player.attackbox.height >= enemy.position.y
         && player.attackbox.position.y <= enemy.position.y + enemy.height
         && player.isAttacking) {
+        player.isAttacking = false;
         console.log('hit');
     }
 };
