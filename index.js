@@ -9,16 +9,38 @@ c.fillRect(0, 0, canvas.width, canvas.height);
 const gravity = 0.7;
 
 class Sprite {
-    constructor({ position, velocity }) {
+    constructor({ position, velocity, color = 'red' }) {
         this.position = position;
         this.velocity = velocity;
+        this.width = 50;
         this.height = 150;
         this.lastKey;
+        this.attackbox = {
+            position: this.position,
+            width: 100,
+            height: 50
+        }
+        this.color = color;
     }
 
     draw() {
-        c.fillStyle = 'red';
-        c.fillRect(this.position.x, this.position.y, 50, this.height);
+        c.fillStyle = this.color;
+        c.fillRect(
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height
+        );
+
+        // Attack Box
+
+        c.fillStyle = 'yellow';
+        c.fillRect(
+            this.attackbox.position.x,
+            this.attackbox.position.y,
+            this.attackbox.width,
+            this.attackbox.height
+        );
     }
 
     update() {
@@ -52,7 +74,8 @@ const enemy = new Sprite({
     velocity: {
         x: 0,
         y: 0
-    }
+    },
+    color: 'blue'
 })
 
 console.log(player);
@@ -94,6 +117,15 @@ function animate() {
         enemy.velocity.x = -5;
     } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
         enemy.velocity.x = 5;
+    }
+
+    // collision detection
+
+    if (player.attackbox.position.x + player.attackbox.width >= enemy.position.x
+        && player.attackbox.position.x <= enemy.position.x + enemy.width
+        && player.attackbox.position.y + player.attackbox.height >= enemy.position.y
+        && player.attackbox.position.y <= enemy.position.y + enemy.height) {
+        console.log('hit');
     }
 };
 
